@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cek Nilai</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color:white;
+            font-family: 'Arial Narrow', Arial, sans-serif;
+        }
+        .logo-pict {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: contain;
+            display: block;
+            margin: auto;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+        .form-container {
+            width: 400px;
+            /* display: grid;
+            place-items: center; */
+            border-radius: 10px;
+            background-color: #f2f2f2;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+        label {
+            font-weight: bold;
+        }
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 2px 0;
+            display: inline-block;
+            box-sizing: border-box;
+            border: 2px solid cadetblue;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        input:focus {
+            background-color: ghostwhite;
+        }
+        input[type=submit] {
+            width: 100%;
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px;
+            margin: 2px 0;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        input[type=submit]:hover {
+            background-color:  #45a049;
+        }
+        h1 {
+            text-align-last: center;
+        }
+        h2 {
+            text-align-last: center;
+        }
+    </style>
+    </head>
+<body>
+    <div class="form-container">
+        <h1>SMP NEGERI 2 CIDAHU</h1>
+        <img src="Img/Logo_Sch.png" alt="Logo Sekolah" class="logo-pict">
+        <h2>INFORMATIKA</h2>
+         <form>
+            <label for="nama">Masukan Nama Siswa</label>
+            <input type="text" id="fname" name="fname" placeholder="Masukan Nama Lengkap. . ."><br>
+            <input type="submit" value="Cek Nilai">
+        </form>
+    </div>
+   
+</body>
+</html>
