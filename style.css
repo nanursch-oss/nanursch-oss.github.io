@@ -55,7 +55,7 @@
             background-color:  #45a049;
         }
         h1 {
-            font-size: 6vw;
+            font-size: 2vw;
             text-align-last: center;
             color: rgba(4, 35, 237, 0.4);
             text-shadow: 2px 2px 4px;
@@ -103,4 +103,5 @@
         .btn-nav:active {
            background-color: #3e8e41;
         }
+
 
