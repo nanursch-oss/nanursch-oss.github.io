@@ -3,45 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <style>
-        .grid-container {
-            display: grid;
-            grid-template-columns: 25% 75%;
-            height:fit-content;
-        }
-
-        .profile-pic {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid #ffffff;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-        }
-
-        .profile-pic:hover {
-            transform: scale(1.1);
-            border-color: #007bff;
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-        }
-    </style>
-</head>
+    <title>Cek Nilai</title>
+    <link rel="stylesheet" href="style.css">
+    </head>
 <body>
-    <div class="grid-container">
-        <div style="background-color: blanchedalmond; text-align: center;">
-            <h3>Nanur Rev</h3>
-            <img src="Img/Nanur_PFYT.jpg" alt="Foto Profil" class="profile-pic">
-            <p>Nana Nurdiyana</p>
-        </div>
-        <div style="background-color: white;">
-            <h2 style="margin-left: 5%;">Selamat Datang Di Halaman Web Ku</h2>
-            <hr>
-            <p style="margin-left: 5%; font-weight: bold;">Hello Nama Saya Nana Nurdiyana</p>
-            <p style="margin-left: 5%;">Saya merupakan seorang guru di SMP Negeri 2 Cidahu</p>
-        </div>
+    <div class="form-container">
+        <h1>SMP NEGERI 2 CIDAHU</h1>
+        <img src="Img/Logo_Sch.png" alt="Logo Sekolah" class="logo-pict">
+        <h2>INFORMATIKA</h2>
+            <label for="nama">Masukan Nama Siswa</label>
+            <input type="text" id="search" placeholder="Contoh: NANA NURDIYANA">
+            <button onclick="searchData()">🔍Cek Nilai</button>
+            <script>
+                function searchData() {
+                    const query = document.getElementById('search').value.toLowerCase();
+                    // arahkan ke halaman result.html dengan query di URL
+                    window.location.href = `result.html?search=${encodeURIComponent(query)}`;
+                }
+            </script>
+        <p>&copy; 2026 Nanur Rev</p>
     </div>
-    
-    
 </body>
 </html>

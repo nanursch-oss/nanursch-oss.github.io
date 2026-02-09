@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hasil Penilaian</title>
+    <script src="https://unpkg.com/read-excel-file@5.5.3/bundle/read-excel-file.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="result" class="form-container"></div>
+    
+    <script>
+        // Ambil parameter dari URL
+        const params = new URLSearchParams(window.location.search);
+        const query = params.get('search');
+
+        fetch('assets/data.xlsx')
+            .then(Response => Response.blob())
+            .then(blob => readXlsxFile(blob))
+            .then(row => {
+                const data = row.slice(1); // buang header
+                const found = data.find(row =>
+                    row[0].toLowerCase() === query || row[1].toLowerCase() === query 
+                );
+
+                const resultDiv = document.getElementById('result');
+                if (found) {
+                    resultDiv.innerHTML = `
+                    <h1>Hasil Pencarian Nilai</h1>
+                    <h2>INFORMATIKA</h2>
+                    <table>
+                        <tr><th>Nama</th><td>${found[0]}</td></tr>
+                        <tr><th>Kelas</th><td>${found[1]}</td></tr>
+                        <tr><th>Tugas</th><td>${found[2]}</td></tr>
+                        <tr><th>Nilai</th><td>${found[3]}</td></tr>
+                        <tr><th></th><td>${found[4]}</td></tr>
+                    </table>
+                    <button class="btn-nav" onclick="goToPage('index.html')">Cari Lagi</button>
+                    <p>&copy; 2026 Nanur Rev</p>
+                    `;
+                } else {
+                    resultDiv.innerHTML = `
+                     <h1>Hasil Pencarian Nilai</h1>
+                    <h2>INFORMATIKA</h2>
+                    <p style="color:red;">Data tidak ditemukan ❌</p>
+                    <button class="btn-nav" onclick="goToPage('index.html')">Cari Lagi</button>
+                    <p>&copy; 2026 Nanur Rev</p>`
+                }
+                    
+            });function goToPage(page) { window.location.href = page; }
+    </script> 
+</body>
+</html>
