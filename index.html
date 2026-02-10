@@ -17,9 +17,19 @@
             <button onclick="searchData()">🔍Cek Nilai</button>
             <script>
                 function searchData() {
-                    const query = document.getElementById('search').value.toLowerCase();
-                    // arahkan ke halaman result.html dengan query di URL
-                    window.location.href = `result.html?search=${encodeURIComponent(query)}`;
+                    const input = document.getElementById('search');
+                    const query = input.value.trim().toLowerCase();
+
+                    if (query === "") {
+                        // Jika input kosong
+                        input.classList.add("shake");
+                        input.placeholder = "⚠️ Isi nama di sini!";
+                        input.focus(); // arahkan fokus ke input
+                        setTimeout(() => input.classList.remove("shake"), 300);
+                    } else {
+                        // Jika input sudah diisi, pindah kehalaman berikutnya
+                        window.location.href = `result.html?search=${encodeURIComponent(query)}`;
+                    }
                 }
             </script>
         <p>&copy; 2026 Nanur Rev</p>
@@ -27,4 +37,5 @@
 </body>
 
 </html>
+
 
