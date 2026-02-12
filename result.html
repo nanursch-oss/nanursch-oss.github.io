@@ -8,49 +8,47 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="result" class="form-container"></div>
+    <div id="result" class="form-container"><div class="pulse"></div><p style="text-align: center;font-weight: bold;">Memuat Data</p></div>
     
     <script>
-        // Ambil parameter dari URL
+        const scriptURL = "https://script.google.com/macros/s/AKfycbw4XFbv1IRfL-ZAyNjefEKqzA49c9NUhHSMNg5CPllGXFH66prDlfEUL1tKGzsz989l/exec";
+
+        // Ambil parameter "search dari URL"
         const params = new URLSearchParams(window.location.search);
-        const query = params.get('search');
-
-        fetch('assets/data.xlsx')
-            .then(Response => Response.blob())
-            .then(blob => readXlsxFile(blob))
-            .then(row => {
-                const data = row.slice(1); // buang header
-                const found = data.find(row =>
-                    row[0].toLowerCase() === query || row[1].toLowerCase() === query 
-                );
-
-                const resultDiv = document.getElementById('result');
-                if (found) {
-                    resultDiv.innerHTML = `
-                    <h1>Hasil Pencarian Nilai</h1>
+        const query = params.get("search");
+            fetch(`${scriptURL}?search=${encodeURIComponent(query)}`)
+            .then(Response => Response.json())
+            .then(data => {
+                if (data.length === 0) {
+                    document.getElementById("result").innerHTML = `<h1>Hasil Pencarian Nilai</h1>
                     <h2>INFORMATIKA</h2>
-                    <table>
-                        <tr><th>Nama</th><td>${found[0]}</td></tr>
-                        <tr><th>Kelas</th><td>${found[1]}</td></tr>
-                        <tr><th>Tugas</th><td>${found[2]}</td></tr>
-                        <tr><th>Nilai</th><td>${found[3]}</td></tr>
-                        <tr><th></th><td>${found[4]}</td></tr>
-                    </table>
-                    <button class="btn-nav" onclick="goToPage('index.html')">Cari Lagi</button>
-                    <p>&copy; 2026 Nanur Rev</p>
-                    `;
-                } else {
-                    resultDiv.innerHTML = `
-                     <h1>Hasil Pencarian Nilai</h1>
-                    <h2>INFORMATIKA</h2>
-                    <p style="color:red;">Data tidak ditemukan ❌</p>
+                    <p style='color:red;'>Data untuk <strong>"${query}"</strong> tidak ditemukan ❌</p>
                     <p><img src="Img/ngoclan.gif"></p>
                     <button class="btn-nav" onclick="goToPage('index.html')">Cari Lagi</button>
-                    <p>&copy; 2026 Nanur Rev</p>`
-                }
-                    
-            });function goToPage(page) { window.location.href = page; }
+                    <p>&copy; 2026 Nanur Rev</p>`;
+                } else {
+            let html = `<h1>Hasil Pencarian Nilai</h1>
+                        <h2>INFORMATIKA</h2>
+                        `;
+            data.forEach(row => {
+              html += `<img src="${row[5]}" alt="Logo Sekolah" class="logo-pict"><br><table>
+                        <tr><th>Nama</th><td>${row[0]}</td></tr>
+                        <tr><th>Kelas</th><td>${row[1]}</td></tr>
+                        <tr><th>Tugas</th><td>${row[2]}</td></tr>
+                        <tr><th>Nilai</th><td>${row[3]}</td></tr>
+                        <tr><th>Status</th><td>${row[4]}</td></tr>`;
+            });
+            html += `</table>
+                    <button class="btn-nav" onclick="goToPage('index.html')">Cari Lagi</button>
+                    <p>&copy; 2026 Nanur Rev</p>`;
+            document.getElementById("result").innerHTML = html;
+          }
+        })
+        .catch(err => {
+          document.getElementById("result").innerHTML = "Error: " + err;
+        });function goToPage(page) { window.location.href = page; }
     </script> 
 </body>
 
 </html>
+
