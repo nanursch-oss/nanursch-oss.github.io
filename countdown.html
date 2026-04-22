@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Countdown PSAJ</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Arial', sans-serif;
+      color: white;
+      text-align: center;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      background: url('Img/pelajar.jpg') no-repeat center center fixed;
+      background-size: cover;
+    }
+
+    header {
+      padding: 20px;
+    }
+    header img {
+      height: 100px;
+    }
+
+    h1 {
+      margin: 20px 0;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+    }
+
+    .countdown {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin: 20px 0;
+    }
+    .countdown div {
+      background: rgba(0,0,0,0.5);
+      padding: 20px;
+      border-radius: 10px;
+      min-width: 80px;
+    }
+    .countdown span {
+      display: block;
+      font-size: 2em;
+      font-weight: bold;
+    }
+    .label {
+      font-size: 0.9em;
+      margin-top: 5px;
+    }
+
+    footer {
+      background: rgba(0,0,0,0.6);
+      padding: 10px;
+      font-size: 0.9em;
+    }
+  </style>
+</head>
+<body>
+  <!-- Logo Sekolah -->
+  <header>
+    <img src="Img/Logo-Sekolah.png" alt="Logo Sekolah">
+  </header>
+
+  <!-- Judul -->
+  <h1>Countdown Menuju PSAJ<br>Tahun Pelajaran 2025/2026</h1>
+
+  <!-- Countdown -->
+  <div class="countdown">
+    <div><span id="days">0</span><div class="label">Hari</div></div>
+    <div><span id="hours">0</span><div class="label">Jam</div></div>
+    <div><span id="minutes">0</span><div class="label">Menit</div></div>
+    <div><span id="seconds">0</span><div class="label">Detik</div></div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    Bidang Kurikulum - SMP Negeri 2 Cidahu
+  </footer>
+
+  <!-- Backsound -->
+  <audio autoplay loop>
+    <source src="Music/Hindia - Secukupnya instrumental.mp3" type="audio/mpeg">
+    Browser Anda tidak mendukung audio.
+  </audio>
+
+  <script>
+    // Tentukan tanggal PSAJ
+    const targetDate = new Date("May 11, 2026 08:00:00").getTime();
+
+    function updateCountdown() {
+      const now = new Date().getTime();
+      const distance = targetDate - now;
+
+      if (distance < 0) {
+        document.querySelector(".countdown").innerHTML = "<h2>PSAJ Sedang Berlangsung 🎉</h2>";
+        return;
+      }
+
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      document.getElementById("days").textContent = days;
+      document.getElementById("hours").textContent = hours;
+      document.getElementById("minutes").textContent = minutes;
+      document.getElementById("seconds").textContent = seconds;
+    }
+
+    setInterval(updateCountdown, 1000);
+  </script>
+</body>
+</html>
