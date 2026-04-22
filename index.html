@@ -70,9 +70,40 @@
       from { opacity: 0; }
       to { opacity: 1; }
     }
+    /* Overlay */
+    #overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.8);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      z-index: 9999;
+      color: white;
+    }
+    #overlay button {
+      padding: 15px 30px;
+      font-size: 1.2em;
+      background: #4CAF50;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      color: white;
+    }
+    #overlay button:hover {
+      background: #45a049;
+    }
   </style>
 </head>
 <body>
+    <!-- Overlay -->
+  <div id="overlay">
+    <h2>Persiapan PSAJ</h2>
+    <p>Klik tombol di bawah untuk memulai</p>
+    <button onclick="startApp()">Mulai</button>
+  </div>
   <!-- Logo Sekolah -->
   <header>
     <img src="Img/Logo-Sekolah.png" alt="Logo Sekolah">
@@ -95,7 +126,7 @@
   </footer>
 
   <!-- Backsound -->
-  <audio autoplay loop>
+  <audio id="Backsound" loop>
     <source src="Music/Hindia - Secukupnya instrumental.mp3" type="audio/mpeg">
     Browser Anda tidak mendukung audio.
   </audio>
@@ -122,9 +153,26 @@
       document.getElementById("hours").textContent = hours;
       document.getElementById("minutes").textContent = minutes;
       document.getElementById("seconds").textContent = seconds;
+
     }
 
-    setInterval(updateCountdown, 1000);
+    function startApp() {
+      // Hilangkan overlay
+      document.getElementById("overlay").style.display = "none";
+
+      // Fade-in elemen
+      document.querySelector("header").style.animation = "fadeIn 2s forwards";
+      document.querySelector("h1").style.animation = "fadeIn 2s forwards 1s";
+      document.querySelector(".countdown").style.animation = "fadeIn 2s forwards 2s";
+      document.querySelector("footer").style.animation = "fadeIn 2s forwards 3s";
+
+      // Mulai countdown
+      countdownInterval = setInterval(updateCountdown, 1000);
+
+      // Putar musik
+      const audio = document.getElementById("Backsound");
+      audio.play().catch(err => console.log("Autoplay dibatasi, user harus klik play:", err));
+    }
   </script>
 </body>
 </html>
