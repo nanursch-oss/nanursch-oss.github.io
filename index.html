@@ -12,8 +12,8 @@
         <h1>SMP Negeri 2 Cidahu</h1>
         <img src="Img/Logo_Sch.png" alt="Logo Sekolah" class="logo-pict">
         <h2>INFORMATIKA</h2>
-            <label for="nis">Masukan Nama Siswa</label>
-            <input type="text" id="search" placeholder="Contoh: NANA NURDIYANA">
+            <label for="nis">Masukan NIS</label>
+            <input type="text" id="search" placeholder="Contoh: 20210001">
             <button onclick="searchData()">🔍Cek Nilai</button>
             <script>
                 function searchData() {
@@ -23,7 +23,7 @@
                     if (query === "") {
                         // Jika input kosong
                         input.classList.add("shake");
-                        input.placeholder = "⚠️ Isi nama di sini!";
+                        input.placeholder = "⚠️ Isi nis di sini!";
                         input.focus(); // arahkan fokus ke input
                         setTimeout(() => input.classList.remove("shake"), 300);
                     } else {
@@ -37,4 +37,3 @@
 </body>
 
 </html>
-
