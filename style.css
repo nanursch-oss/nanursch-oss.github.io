@@ -56,6 +56,7 @@
             background-color:  #45a049;
         }
         h1 {
+            font-size: auto;
             text-align-last: center;
             color: rgba(4, 35, 237, 0.4);
             text-shadow: 2px 2px 4px;
@@ -67,7 +68,7 @@
             text-align-last: center;
         }
 
-        table {
+        /*table {
             font-family: arial, sans-serif;
             border-collapse: collapse;
             width: 100%;
@@ -81,7 +82,52 @@
 
         tr:nth-child(even) {
             background-color: #dddddd;
+        }*/
+
+        #result {
+        max-width: 800px;   /* lebar maksimal div */
+        margin: 20px auto;  /* posisi tengah */
+        padding: 15px;
+        background: #f9f9f9;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
+
+        /* #result h1, #result h2 {
+        text-align: center;
+        margin-bottom: 15px;
+        color: #2E7D32;
+        } */
+
+        #result table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+        }
+
+        #result th {
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px;
+        text-align: center;
+        }
+
+        #result td {
+        padding: 10px;
+        text-align: center;
+        border: 1px solid #ddd;
+        }
+
+        #result tr:nth-child(even) {
+        background-color: #f2f2f2; /* baris genap abu-abu */
+        }
+
+        /* .logo-pict {
+        display: block;
+        margin: 0 auto 15px auto;
+        height: 80px;
+        } */
+
 
         .btn-nav {
             align-items: center;
@@ -114,19 +160,4 @@
             75% { transform: translateX(-5px); }
             100% { transform: translateX(0); }
         }
-
-        .pulse {
-            width: 40px;
-            height: 40px;
-            background: #4CAF50;
-            border-radius: 50%;
-            margin: 50px auto;
-            animation: pulse 1.5s infinite;
-         }
-            @keyframes pulse {
-            0% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.5); opacity: 0.5; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-
 
