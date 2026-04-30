@@ -11,12 +11,12 @@
     <div id="result" class="form-container"><div class="pulse"></div><p style="text-align: center;font-weight: bold;">Memuat Data</p></div>
     
     <script>
-        const scriptURL = "https://script.google.com/macros/s/AKfycbyba2ADFamfDHuXvnxAXMkhbaQdnFGUO77Lw-ChbR1Gfz48nDoCid8P45UUZOFgBV0E/exec";
+        const scriptURL = "https://script.google.com/macros/s/AKfycbydwL_9AsypEuAY2iKYOTj89LpZHVkaBqqlPvjvZQVM7kfEtz2OiuppzNs3xc0EtOmo/exec";
         
         // Ambil parameter "search dari URL"
         const params = new URLSearchParams(window.location.search);
         const query = params.get("search");
-            fetch(`${scriptURL}?search=${encodeURIComponent(query)}`)
+            fetch(`${scriptURL}?nis=${encodeURIComponent(query)}`)
             .then(Response => Response.json())
             .then(data => {
                 if (data.length === 0) {
