@@ -29,14 +29,51 @@
                 } else {
             let html = `<h1>Hasil Pencarian Nilai</h1>
                         <h2>INFORMATIKA</h2>
+                        <img src="${data[0][6]}" alt="Foto Siswa" class="logo-pict"><br><table>
+                        <tr>
+                            <th>Nama</th>
+                            <th>Kelas</th>
+                            <th>Tugas</th>
+                            <th>Nilai</th>
+                            <th>Status</th>
+                        </tr>
                         `;
             data.forEach(row => {
-              html += `<img src="${row[6]}" alt="Logo Sekolah" class="logo-pict"><br><table>
-                        <tr><th>Nama</th><td>${row[1]}</td></tr>
-                        <tr><th>Kelas</th><td>${row[2]}</td></tr>
-                        <tr><th>Tugas</th><td>${row[3]}</td></tr>
-                        <tr><th>Nilai</th><td>${row[4]}</td></tr>
-                        <tr><th>Status</th><td>${row[5]}</td></tr>`;
+                // Nama dan Kelas ditampilkan sekali, lalu rowspan sesuai jumlah tugas
+                let nama = row[1];
+                let kelas = row[2];
+
+                // Hitung berapa set tugas (misalnya setiap 3 kolom = Tugas, Nilai, Status)
+                let tugasCount = Math.floor((row.length - 3) / 3);
+
+                for (let j = 0; j < tugasCount; j++) {
+                    let tugas = row[4 + j*3];
+                    let nilai = row[5 + j*3];
+                    let status = row[6 + j*3];
+
+                    if (j === 0) {
+                    // Baris pertama: tampilkan Nama dan Kelas
+              html += `
+                        <tr>
+                            <td rowspan="${tugasCount}">${nama}</td>
+                            <td rowspan="${tugasCount}">${kelas}</td>
+                            <td>${tugas}</td>
+                            <td>${nilai}</td>
+                            <td>${status}</td>
+                        </tr>
+                        `;
+                    } else {
+                        // Baris berikutnya hanya : Tugas, Nilai, Status
+                        html += `
+                        <tr>
+                            <td>${tugas}</td>
+                            <td>${nilai}</td>
+                            <td>${status}</td>
+                        </tr>
+                        `;
+                    }
+                }
+                        
             });
             html += `</table>
                     <button class="btn-nav" onclick="goToPage('index.html')">Cari Lagi</button>
@@ -51,4 +88,3 @@
 </body>
 
 </html>
-
