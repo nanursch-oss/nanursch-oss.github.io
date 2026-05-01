@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hasil Penilaian</title>
     <script src="https://unpkg.com/read-excel-file@5.5.3/bundle/read-excel-file.min.js"></script>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="CSS/style_res.css">
 </head>
 <body>
-    <div id="result" class="form-container"><div class="pulse"></div><p style="text-align: center;font-weight: bold;">Memuat Data</p></div>
+    <div id="result" class="form-container"><div class="squares"><div></div><div></div><div></div><div></div></div><p style="text-align: center;font-weight: bold;">Memuat Data</p></div>
     
     <script>
         const scriptURL = "https://script.google.com/macros/s/AKfycbydwL_9AsypEuAY2iKYOTj89LpZHVkaBqqlPvjvZQVM7kfEtz2OiuppzNs3xc0EtOmo/exec";
@@ -24,7 +24,7 @@
                     <h2>INFORMATIKA</h2>
                     <p style='color:red;'>Data untuk <strong>"${query}"</strong> tidak ditemukan ❌</p>
                     <p><img src="Img/ngoclan.gif"></p>
-                    <button class="btn-nav" onclick="goToPage('index.html')">Cari Lagi</button>
+                    <button class="btn-nav" onclick="goToPage('index.html')">🔍 Cari Lagi</button>
                     <p>&copy; 2026 Nanur Rev</p>`;
                 } else {
             let html = `<h1>Hasil Pencarian Nilai</h1>
@@ -76,7 +76,7 @@
                         
             });
             html += `</table>
-                    <button class="btn-nav" onclick="goToPage('index.html')">Cari Lagi</button>
+                    <button class="btn-nav" onclick="goToPage('index.html')">🔍 Cari Lagi</button>
                     <p>&copy; 2026 Nanur Rev</p>`;
             document.getElementById("result").innerHTML = html;
           }
@@ -86,5 +86,4 @@
         });function goToPage(page) { window.location.href = page; }
     </script> 
 </body>
-
 </html>
