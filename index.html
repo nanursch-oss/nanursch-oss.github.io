@@ -134,8 +134,8 @@
     <h2>Login Siswa</h2>
     <form id="loginForm">
       <div class="form-group">
-        <label for="nisn">NISN</label>
-        <input type="text" id="nisn" placeholder="Masukkan NISN" required>
+        <label for="nisn">NIS</label>
+        <input type="text" id="nisn" placeholder="Masukkan NIS" required>
       </div>
       <div class="form-group">
         <label for="password">Password</label>
@@ -166,7 +166,7 @@
       <div class="user-info">
         <div class="user-details">
           <strong>Nama Siswa:</strong> <span id="namaSiswa"></span><br>
-          <strong>NIS / NISN:</strong> <span id="nisnSiswa"></span>
+          <strong>NIS:</strong> <span id="nisnSiswa"></span>
         </div>
         <img id="fotoSiswa" src="Img/RAESA ALDIANSAH.JPG" alt="Foto Siswa" class="foto-siswa">
       </div>
@@ -260,7 +260,7 @@
 
             loadNilai(data.nisn);
           } else {
-            loginError.innerText = data.message || "NISN atau Password salah!";
+            loginError.innerText = data.message || "NIS atau Password salah!";
           }
         })
         .catch(err => {
