@@ -1,45 +1,345 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cek Nilai</title>
-    <link rel="stylesheet" href="CSS/style_in.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    </head>
-<body>
-    <div class="form-container">
-        <h1>Aplikasi Cek Nilai</h1>
-        <h1>SMP Negeri 2 Cidahu</h1>
-        <img src="Img/Logo_Sch.png" alt="Logo Sekolah" class="logo-pict">
-        <h2>INFORMATIKA</h2>
-            <label for="nis">Masukan No ID</label>
-            <input type="text" id="search" placeholder="Contoh: INF-A099">
-            <button onclick="searchData()">🔍 Cek Nilai</button>
-            <script>
-                function searchData() {
-                    const input = document.getElementById('search');
-                    const query = input.value.trim().toLowerCase();
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistem Cek Nilai Siswa</title>
+  
+  <!-- Pustaka html2pdf.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
-                    if (query === "") {
-                        // Jika input kosong
-                        input.classList.add("shake");
-                        input.placeholder = "⚠️ Isi nis di sini!";
-                        input.focus(); // arahkan fokus ke input
-                        setTimeout(() => input.classList.remove("shake"), 300);
-                    } else {
-                        // Jika input sudah diisi, pindah kehalaman berikutnya
-                        window.location.href = `result.html?search=${encodeURIComponent(query)}`;
-                    }
-                }
-            </script>
-        <p>&copy; 2026 Nanur Rev</p>
-        <div class="social-media">
-        <a href="https://instagram.com/nanur.rev" target="_blank"><i class="fab fa-instagram"></i></a>
-        <a href="https://twitter.com/@nanur_rev" target="_blank"><i class="fab fa-tiktok"></i></a>
-        <a href="https://youtube.com/@NanurRev" target="_blank"><i class="fab fa-youtube"></i></a>
+  <style>
+    * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    
+    body { 
+      background-color: #f4f7f6; 
+      display: flex; 
+      justify-content: center; 
+      align-items: center; 
+      min-height: 100vh; 
+      margin: 0; 
+      padding: 10px; /* Dikurangi agar tidak sesak di HP */
+    }
+
+    .card { 
+      background: white; 
+      padding: 20px; 
+      border-radius: 10px; 
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
+      width: 100%; 
+      max-width: 650px; 
+    }
+
+    h2 { text-align: center; color: #333; margin-bottom: 20px; }
+    .form-group { margin-bottom: 15px; }
+    label { display: block; margin-bottom: 5px; color: #666; font-weight: 600; }
+    input { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; font-size: 14px; }
+    
+    .btn { width: 100%; padding: 10px; color: white; border: none; border-radius: 5px; font-size: 15px; cursor: pointer; font-weight: bold; margin-top: 5px; }
+    .btn-primary { background-color: #007bff; }
+    .btn-primary:hover { background-color: #0056b3; }
+    .btn-success { background-color: #28a745; }
+    .btn-success:hover { background-color: #218838; }
+    .btn-secondary { background-color: #17a2b8; }
+    .btn-secondary:hover { background-color: #138496; }
+    .btn-danger { background-color: #dc3545; }
+    .btn-danger:hover { background-color: #c82333; }
+
+    /* KOP SURAT RESPONSUIF */
+    .kop-surat { display: flex; align-items: center; justify-content: space-between; border-bottom: 3px double #000; padding-bottom: 10px; margin-bottom: 15px; }
+    .kop-logo { width: 60px; height: 60px; object-fit: contain; }
+    .kop-teks { text-align: center; flex-grow: 1; padding: 0 5px; }
+    .kop-teks h3 { margin: 0; font-size: 11px; text-transform: uppercase; font-weight: normal; color: #444; }
+    .kop-teks h1 { margin: 2px 0; font-size: 15px; text-transform: uppercase; color: #000; }
+    .kop-teks p { margin: 2px 0; font-size: 10px; color: #555; }
+
+    .judul-laporan { text-align: center; font-size: 14px; margin: 12px 0; font-weight: bold; text-decoration: underline; text-transform: uppercase; }
+
+    /* USER INFO RESPONSIVE */
+    .user-info { 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center; 
+      margin-bottom: 15px; 
+      padding: 10px 12px; 
+      background: #f8f9fa; 
+      border: 1px solid #e9ecef; 
+      border-radius: 8px; 
+    }
+    .user-details { line-height: 1.6; font-size: 13px; }
+    .foto-siswa { 
+      width: 60px; 
+      height: 80px; 
+      object-fit: cover; 
+      border: 1px solid #ccc; 
+      border-radius: 4px; 
+      background-color: #eee;
+      flex-shrink: 0;
+    }
+
+    /* CONTAINER TABEL SUPAYA BISA DI-SCROLL DI HP */
+    .table-responsive {
+      width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      margin-top: 10px;
+    }
+
+    table { width: 100%; border-collapse: collapse; min-width: 450px; }
+    th, td { border: 1px solid #333; padding: 6px 8px; text-align: center; font-size: 13px; }
+    th { background-color: #007bff; color: white; }
+    td.text-left { text-align: left; }
+    
+    .hidden { display: none; }
+    .error { color: red; text-align: center; margin-top: 10px; font-weight: bold; }
+
+    /* AREA TANDA TANGAN RESPONSIVE */
+    .ttd-container { display: flex; justify-content: space-between; margin-top: 30px; page-break-inside: avoid; }
+    .ttd-box { text-align: center; width: 48%; font-size: 12px; }
+    .ttd-space { height: 50px; }
+    .ttd-nama { font-weight: bold; text-decoration: underline; }
+    .ttd-nip { font-size: 11px; color: #333; }
+
+    .action-buttons { margin-top: 20px; display: flex; flex-direction: column; gap: 8px; }
+
+    /* MEDIA QUERY UNTUK LAYAR HP KECIL (< 480px) */
+    @media screen and (max-width: 480px) {
+      .card { padding: 12px; }
+      .kop-logo { width: 45px; height: 45px; }
+      .kop-teks h1 { font-size: 13px; }
+      .kop-teks h3 { font-size: 9px; }
+      .kop-teks p { font-size: 8px; }
+      .user-details { font-size: 12px; }
+      .foto-siswa { width: 50px; height: 65px; }
+      th, td { padding: 5px 6px; font-size: 11px; }
+      .ttd-box { font-size: 10px; }
+      .ttd-space { height: 40px; }
+    }
+
+    /* PENGATURAN KHUSUS CETAK PRINTER / PDF */
+    @media print {
+      body { background: white; padding: 0; }
+      .card { box-shadow: none; border: none; width: 100%; max-width: 100%; padding: 0; }
+      .action-buttons, .btn-danger { display: none !important; }
+      .table-responsive { overflow-x: visible; }
+      table { min-width: 100%; }
+      th { background-color: #333 !important; color: white !important; -webkit-print-color-adjust: exact; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Halaman Login -->
+  <div id="loginPage" class="card">
+    <h2>Login Siswa</h2>
+    <form id="loginForm">
+      <div class="form-group">
+        <label for="nisn">NISN</label>
+        <input type="text" id="nisn" placeholder="Masukkan NISN" required>
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="Masukkan Password" required>
+      </div>
+      <button type="submit" id="btnLogin" class="btn btn-primary">Masuk</button>
+    </form>
+    <p id="loginError" class="error"></p>
+  </div>
+
+  <!-- Halaman Dashboard / Nilai -->
+  <div id="dashboardPage" class="card hidden">
+    <div id="areaCetak">
+      <!-- KOP SURAT SEKOLAH -->
+      <div class="kop-surat">
+        <img src="Img/Logo_Spendaci.png" alt="Logo Sekolah" class="kop-logo">
+        <div class="kop-teks">
+          <h3>PEMERINTAH KABUPATEN KUNINGAN</h3>
+          <h1>SMP NEGERI 2 CIDAHU</h1>
+          <p>Jalan Raya Cikeusik - Cidahu - Kuningan, Jawa Barat 45595</p>
+          <p>Email: smpn2cidahu@gmail.com</p>
+        </div>
+      </div>
+
+      <div class="judul-laporan">Laporan Hasil Belajar Siswa</div>
+
+      <!-- KOTAK DATA SISWA + FOTO DI SEBELAH KANAN -->
+      <div class="user-info">
+        <div class="user-details">
+          <strong>Nama Siswa:</strong> <span id="namaSiswa"></span><br>
+          <strong>NIS / NISN:</strong> <span id="nisnSiswa"></span>
+        </div>
+        <img id="fotoSiswa" src="Img/RAESA ALDIANSAH.JPG" alt="Foto Siswa" class="foto-siswa">
+      </div>
+    <div class="table-responsive">
+      <table>
+        <thead>
+          <tr>
+            <th>Mata Pelajaran</th>
+            <th>Semester</th>
+            <th>Kategori / Jenis</th>
+            <th>Nilai</th>
+          </tr>
+        </thead>
+        <tbody id="tabelNilai">
+        </tbody>
+      </table>
+    </div>
+      
+
+      <!-- AREA TANDA TANGAN -->
+      <div class="ttd-container">
+        <div class="ttd-box">
+          <p>Mengetahui,<br>Orang Tua / Wali Siswa</p>
+          <div class="ttd-space"></div>
+          <p class="ttd-nama">( .................................... )</p>
         </div>
 
+        <div class="ttd-box">
+          <p>Cidahu, <span id="tglCetak"></span><br>Guru Mata Pelajaran</p>
+          <div class="ttd-space"></div>
+          <p class="ttd-nama">Nana Nurdiyana, S.Kom.</p>
+          <p class="ttd-nip">NIP. 19940615 202221 1 005</p>
+        </div>
+      </div>
+
     </div>
+
+    <!-- Tombol Aksi -->
+    <div class="action-buttons">
+      <button onclick="downloadPDF()" class="btn btn-success">📄 Simpan sebagai PDF</button>
+      <button onclick="cetakLaporan()" class="btn btn-secondary">🖨️ Cetak Langsung</button>
+      <button onclick="logout()" class="btn btn-danger">Keluar</button>
+    </div>
+  </div>
+
+  <script>
+    const API_URL = "https://script.google.com/macros/s/AKfycbyquhEZAYj7EZDA9qObnnkIrLTqiuojGmnao8xssUaUvQGplWAaFDLzE9G_rLqejOj_/exec";
+
+    document.addEventListener("DOMContentLoaded", function() {
+      const options = { year: 'numeric', month: 'long', day: 'numeric' };
+      const today = new Date().toLocaleDateString('id-ID', options);
+      document.getElementById("tglCetak").innerText = today;
+    });
+
+    document.getElementById("loginForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      
+      const nisn = document.getElementById("nisn").value.trim();
+      const password = document.getElementById("password").value.trim();
+      const btnLogin = document.getElementById("btnLogin");
+      const loginError = document.getElementById("loginError");
+
+      if (API_URL === "URL_WEB_APP_GOOGLE_SCRIPT_KAMU" || !API_URL) {
+        loginError.innerText = "Error: Masukkan URL Google Apps Script pada variabel API_URL!";
+        return;
+      }
+
+      btnLogin.innerText = "Memproses...";
+      btnLogin.disabled = true;
+      loginError.innerText = "";
+
+      const targetUrl = `${API_URL}?action=login&nisn=${encodeURIComponent(nisn)}&password=${encodeURIComponent(password)}`;
+
+      fetch(targetUrl, { method: "GET", redirect: "follow" })
+        .then(res => res.json())
+        .then(data => {
+          btnLogin.innerText = "Masuk";
+          btnLogin.disabled = false;
+
+          if (data.status === "success") {
+            document.getElementById("loginPage").classList.add("hidden");
+            document.getElementById("dashboardPage").classList.remove("hidden");
+            
+            document.getElementById("namaSiswa").innerText = data.nama;
+            document.getElementById("nisnSiswa").innerText = data.nisn;
+
+            // Memasang URL foto siswa jika tersedia di database
+            if (data.foto) {
+              document.getElementById("fotoSiswa").src = data.foto;
+            }
+
+            loadNilai(data.nisn);
+          } else {
+            loginError.innerText = data.message || "NISN atau Password salah!";
+          }
+        })
+        .catch(err => {
+          console.error("Error Fetch:", err);
+          btnLogin.innerText = "Masuk";
+          btnLogin.disabled = false;
+          loginError.innerText = "Gagal terhubung ke server.";
+        });
+    });
+
+    function loadNilai(nisn) {
+      const tabelNilai = document.getElementById("tabelNilai");
+      tabelNilai.innerHTML = "<tr><td colspan='4'>Memuat nilai...</td></tr>";
+
+      const targetUrl = `${API_URL}?action=getNilai&nisn=${encodeURIComponent(nisn)}`;
+
+      fetch(targetUrl, { method: "GET", redirect: "follow" })
+        .then(res => res.json())
+        .then(res => {
+          if (!res.data || res.data.length === 0) {
+            tabelNilai.innerHTML = "<tr><td colspan='4'>Belum ada data nilai.</td></tr>";
+            return;
+          }
+
+          renderTabelNilai(res.data);
+        })
+        .catch(err => {
+          console.error("Error load nilai:", err);
+          tabelNilai.innerHTML = "<tr><td colspan='4' style='color:red;'>Gagal mengambil data nilai.</td></tr>";
+        });
+    }
+
+    function renderTabelNilai(data) {
+      const tabelNilai = document.getElementById("tabelNilai");
+      tabelNilai.innerHTML = "";
+
+      data.forEach(item => {
+        const totalTugas = item.daftarNilai.length;
+
+        item.daftarNilai.forEach((detail, index) => {
+          let tr = document.createElement("tr");
+
+          if (index === 0) {
+            tr.innerHTML += `<td rowspan="${totalTugas}" class="text-left" style="vertical-align: middle;"><b>${item.mapel}</b></td>`;
+            tr.innerHTML += `<td rowspan="${totalTugas}" style="vertical-align: middle;">${item.semester}</td>`;
+          }
+
+          tr.innerHTML += `<td class="text-left">${detail.jenis}</td>`;
+          tr.innerHTML += `<td><b>${detail.nilai}</b></td>`;
+
+          tabelNilai.appendChild(tr);
+        });
+      });
+    }
+
+    function downloadPDF() {
+      const element = document.getElementById("areaCetak");
+      const nisn = document.getElementById("nisnSiswa").innerText;
+
+      const opt = {
+        margin:       [10, 10, 10, 10],
+        filename:     `Laporan_Nilai_${nisn}.pdf`,
+        image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas:  { scale: 2 },
+        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+      };
+
+      html2pdf().set(opt).from(element).save();
+    }
+
+    function cetakLaporan() {
+      window.print();
+    }
+
+    function logout() {
+      document.getElementById("dashboardPage").classList.add("hidden");
+      document.getElementById("loginPage").classList.remove("hidden");
+      document.getElementById("loginForm").reset();
+    }
+  </script>
 </body>
 </html>
